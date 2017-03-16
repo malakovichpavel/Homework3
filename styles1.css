@@ -1,0 +1,22 @@
+body{
+	background-image: url(1.jpg);
+}
+a { 
+    text-decoration: none; /* Отменяем подчеркивание у ссылки */
+   }
+#blok1{
+    width: 85%;
+    height: 125px;
+    padding: 15px;
+    border-radius: 5px;
+    background: #E4E4E4;
+    opacity: 0.9;
+    box-shadow: 3px 3px 5px #000;
+}
+.fon {
+    background-color: #FFCE42;
+   }
+button:hover {
+    background: #4D7482;
+    color: #C8CEBC;
+}
