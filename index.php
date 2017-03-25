@@ -36,16 +36,14 @@ username = '$user_username' AND password = SHA('$user_password')";
     <title>HomeWork3</title>
 </head>
 <body>
-
+<center>
 <div id= "blok1" >
-    <ul>
-        <li class="active"><a href="index.php">Авторизация</a></li>
-        <li><a href="signup1.php">Регистрация</a></li>
-        <li><a href="list.php">Список пользователей</a></li>
-        <li><a href="filelist.php">Список файлов</a></li>
-    </ul>
+    <a href="index.php">-Авторизация-  </a>
+    <a href="signup1.php">-Регистрация-  </a>
+    <a href="list.php">-Список пользователей-  </a>
+    <a href="filelist.php">-Список файлов-  </a>
 </div><!--/.nav-collapse -->
-
+</center>
 <content>
     <?php
     if(empty($_COOKIE['username'])) {
