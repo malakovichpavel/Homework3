@@ -1,4 +1,29 @@
 <?php
+session_start();
+
+$userstr = ' (Guest)';
+
+if (isset($_SESSION['user']))
+{
+    $user     = $_SESSION['user'];
+    $loggedin = TRUE;
+    $userstr  = " ($user)";
+}
+else $loggedin = FALSE;
+
+if ($loggedin)
+{
+    echo "<br ><ul>" .
+        "<span class='info'>&#8658; Вы зарегистрированы - можете пользоваться ресурсом.</span><br><br>";
+}
+else
+{
+    echo ("<br><ul class='menu'>" .
+        "<li><a href='signup.php'>Регистрация</a></li>"            .
+        "<li><a href='index.php'>Авторизация</a></li></ul><br>"     .
+        "<span class='info'>&#8658; Ты должен быть зарегистрирован и авторизован " .
+        "чтобы просматривать эту страницу.</span><br><br>");
+}
 
 ?>
 <!DOCTYPE html>
@@ -31,12 +56,16 @@
             </tr>
             <tr>
                 <td>
-                    <?php // Вывод содержимого таблицы signup
+                    <?php
+
+                    // Вывод содержимого таблицы signup
                     require_once 'login.php';
                     $conn = new mysqli($hn, $un, $pw, $db);
                     if (mysqli_connect_errno()) {
                         die (mysqli_connect_error());
                     }
+
+                    // загрузка username из signup
 
                     $query = "SELECT * FROM signup";
                     $result = $conn->query($query);
@@ -54,11 +83,12 @@
                     <?php
                     } $result->close();
                     ?>
-                    <!--vasya99-->
                 </td>
                 <td>
-
                     <?php
+
+                    // загрузка name
+
                     $query = "SELECT * FROM info";
                     $result = $conn->query($query);
                     if(!$result) die($conn->error);
@@ -76,10 +106,12 @@
                     } $result->close();
                     ?>
 
-                    <!--Вася-->
                 </td>
                 <td>
                     <?php
+
+                    // загрузка age
+
                     $query = "SELECT * FROM info";
                     $result = $conn->query($query);
                     if(!$result) die($conn->error);
@@ -97,15 +129,17 @@
                     } $result->close();
                     ?>
 
-                    <!--14-->
                 </td>
                 <td>
                     <?php
+
+                    // загрузка description
+
                     $query = "SELECT * FROM info";
                     $result = $conn->query($query);
                     if(!$result) die($conn->error);
-
-                    for($i = 0, $lenght = $result->num_rows; $i < $lenght; $i++){
+                    $lenght = $result->num_rows;
+                    for($i = 0;  $i < $lenght; $i++) {
                         $result->data_seek($i);
                         $row = $result->fetch_assoc();
                         ?>
@@ -118,11 +152,52 @@
                     } $result->close();
                     ?>
 
-                    <!--Эксперт в спорах в интернете-->
                 </td>
-                <td><img src="http://lorempixel.com/people/200/200/" alt=""></td>
+
                 <td>
-                    <a href="">Удалить пользователя</a>
+                    <?php
+
+                    // загрузка фото из папки
+
+                    $query = "SELECT * FROM info";
+                    $result = $conn->query($query);
+                    if(!$result) die($conn->error);
+                    $lenght = $result->num_rows;
+
+                    for($i = 0;  $i < $lenght; $i++) {
+                        $result->data_seek($i);
+                        $row = $result->fetch_assoc();
+                        ?>
+                        <div class="table1"><center>
+                                <img src="img/'foto_name'"/>
+                            </center> </div>
+                        <?php
+                    } $result->close();
+                    ?>
+                    <!-- <img src="http://lorempixel.com/people/100/100/" alt="">-->
+                </td>
+                <td>
+                    <?php
+
+                    // Удалить пользователя
+
+                    $query = "SELECT * FROM signup";
+                    $result = $conn->query($query);
+                    if(!$result) die($conn->error);
+
+                    for($i = 0, $lenght = $result->num_rows; $i < $lenght; $i++){
+                        $result->data_seek($i);
+                        $row = $result->fetch_assoc();
+                        ?>
+                        <div><center>
+                                <a href="del.php">Удалить пользователя</a>
+
+                            </center> </div>
+                        <?php
+                    } $result->close();
+
+                    ?>
+
                 </td>
             </tr>
         </table>

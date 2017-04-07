@@ -1,4 +1,29 @@
 <?php
+session_start();
+
+$userstr = ' (Guest)';
+
+if (isset($_SESSION['user']))
+{
+    $user     = $_SESSION['user'];
+    $loggedin = TRUE;
+    $userstr  = " ($user)";
+}
+else $loggedin = FALSE;
+
+if ($loggedin)
+{
+    echo "<br ><ul>" .
+        "<span>&#8658; Вы зарегистрированы - можете пользоваться ресурсом.</span><br><br>";
+}
+else
+{
+    echo ("<br><ul class='menu'>" .
+        "<li><a href='signup.php'>Регистрация</a></li>"            .
+        "<li><a href='index.php'>Авторизация</a></li></ul><br>"     .
+        "<span>&#8658; Ты должен быть зарегистрирован и авторизован " .
+        "чтобы просматривать эту страницу.</span><br><br>");
+}
 
 ?>
 <!DOCTYPE html>
@@ -27,10 +52,93 @@
                 <th>Действия</th>
             </tr>
             <tr>
-                <td>1.jpg</td>
-                <td><img src="http://lorempixel.com/people/200/200/" alt=""></td>
                 <td>
-                    <a href="">Удалить аватарку пользователя</a>
+
+                    <?php
+                    require_once 'login.php';
+                    $conn = new mysqli($hn, $un, $pw, $db);
+
+
+                    // загрузка foto_name из бд
+
+                    $query = "SELECT * FROM info";
+                    $result = $conn->query($query);
+                    if(!$result) die($conn->error);
+                    $lenght = $result->num_rows;
+
+                    for($i = 0;  $i < $lenght; $i++) {
+                    $result->data_seek($i);
+                    $row = $result->fetch_assoc();
+                    ?>
+                    <div class="table1"><center>
+                            <?php
+                            echo $row['foto_name'].'<br />';
+                            ?>
+                        </center> </div>
+                    <?php
+                    } $result->close();
+                    ?>
+                </td>
+
+                <td>
+                    <?php
+
+                    // загрузка фото из папки
+
+                    $wimage = "";
+                    $fimg = "";
+                    $path = "img/"; // задаем путь до сканируемой папки с изображениями
+                    $images = scandir($path); // сканируем папку
+                    if ($images !== false) { // если нет ошибок при сканировании
+                        $images = preg_grep("/\.(?:png|gif|jpe?g)$/i", $images); // через регулярку создаем массив только изображений
+                        if (is_array($images)) { // если изображения найдены
+                            foreach($images as $image) { // делаем проход по массиву
+                                $fimg .= "<img src='".$path.htmlspecialchars(urlencode($image))."' alt='".$image."'\" width=\"50\" /><br/>";
+                            }
+                            $wimage .= $fimg;
+                        } else { // иначе, если нет изображений
+                            $wimage .= "<div style='text-align:center'>Не обнаружено изображений в директории!</div>\n";
+                        }
+                    } else { // иначе, если директория пуста или произошла ошибка
+                        $wimage .= "<div style='text-align:center'>Директория пуста или произошла ошибка при сканировании.</div>";
+                    }
+                    echo $wimage; // выводим полученный результат
+
+
+                    /*$arr = scandir('./');
+                    foreach($arr as $v) {
+                        if(stripos($v,'.jpg'))
+                            echo '<img src="'.$v.'" width="100" hegiht="100" />';
+                    }*/
+                    ?>
+
+                    <!--<img src="http://lorempixel.com/people/100/100/" alt=""></td>-->
+
+                <td>
+<?php
+
+// Удалить пользователя
+
+$query = "SELECT * FROM signup";
+$result = $conn->query($query);
+if(!$result) die($conn->error);
+
+for($i = 0, $lenght = $result->num_rows; $i < $lenght; $i++){
+    $result->data_seek($i);
+    $row = $result->fetch_assoc();
+    ?>
+    <div><center>
+
+            <form action=del.php method=post><input
+                        type=hidden name='user_id' value='user_id'>
+                <input type=submit value='удалить'></form>
+            <!--<a href="del.php">Удалить аватарку пользователя</a>-->
+             <!-- <a href="delete-form-page.php?id=</*?=$result["id"]*/?>">Удалить пользователя</a>-->
+        </center> </div>
+    <?php
+} $result->close();?>
+
+
                 </td>
             </tr>
         </table>
