@@ -1,15 +1,15 @@
 <?php
 session_start();
 
-$userstr = ' (Guest)';
-
-if (isset($_SESSION['user']))
+$userstr = '(Guest)';
+$loggedin = FALSE;
+if (isset($_COOKIE['user_id']))
 {
-    $user     = $_SESSION['user'];
+    $user     = $_COOKIE['user_id'];
     $loggedin = TRUE;
     $userstr  = " ($user)";
 }
-else $loggedin = FALSE;
+//else $loggedin = FALSE;
 
 if ($loggedin)
 {
@@ -129,11 +129,12 @@ for($i = 0, $lenght = $result->num_rows; $i < $lenght; $i++){
     ?>
     <div><center>
 
-            <form action=del.php method=post><input
-                        type=hidden name='user_id' value='user_id'>
-                <input type=submit value='удалить'></form>
-            <!--<a href="del.php">Удалить аватарку пользователя</a>-->
-             <!-- <a href="delete-form-page.php?id=</*?=$result["id"]*/?>">Удалить пользователя</a>-->
+
+            <form action="del.php" method=post><input
+                        name='user_id' value="<?php echo $row['user_id']; ?>">
+                <input value="Удалить пользователя" type="submit" name="submit"></form>
+
+
         </center> </div>
     <?php
 } $result->close();?>

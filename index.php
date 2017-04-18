@@ -54,7 +54,9 @@ username = '$user_username' AND password = SHA('$user_password')";
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <br><br><br>
             <input type="text" placeholder="Login" name="username"><br><br>
-            <input type="password" placeholder="Password" name="password1"><br><br>
+
+            <input type="password" placeholder="Password" name="password"><br><br>
+
             <button type="submit" name="submit">Enter</button>
             <br><br>
             <a href="signup1.php">Registration</a></form> <br><br>

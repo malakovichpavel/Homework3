@@ -18,11 +18,7 @@ if ($loggedin)
 }
 else
 {
-    echo ("<br><ul class='menu'>" .
-        "<li><a href='signup.php'>Регистрация</a></li>"            .
-        "<li><a href='index.php'>Авторизация</a></li></ul><br>"     .
-        "<span class='info'>&#8658; Ты должен быть зарегистрирован и авторизован " .
-        "чтобы просматривать эту страницу.</span><br><br>");
+    header('Location: index.php');
 }
 
 ?>
@@ -70,8 +66,8 @@ else
                     $query = "SELECT * FROM signup";
                     $result = $conn->query($query);
                     if(!$result) die($conn->error);
-
-                    for($i = 0, $lenght = $result->num_rows; $i < $lenght; $i++){
+                    $lenght = $result->num_rows;
+                    for($i = 0; $i < $lenght; $i++){
                         $result->data_seek($i);
                         $row = $result->fetch_assoc();
                         ?>
@@ -93,7 +89,8 @@ else
                     $result = $conn->query($query);
                     if(!$result) die($conn->error);
 
-                    for($i = 0, $lenght = $result->num_rows; $i < $lenght; $i++){
+                    $lenght = $result->num_rows;
+                    for($i = 0; $i < $lenght; $i++){
                         $result->data_seek($i);
                         $row = $result->fetch_assoc();
                         ?>
@@ -115,8 +112,8 @@ else
                     $query = "SELECT * FROM info";
                     $result = $conn->query($query);
                     if(!$result) die($conn->error);
-
-                    for($i = 0, $lenght = $result->num_rows; $i < $lenght; $i++){
+                    $lenght = $result->num_rows;
+                    for($i = 0; $i < $lenght; $i++){
                         $result->data_seek($i);
                         $row = $result->fetch_assoc();
                         ?>
@@ -163,7 +160,6 @@ else
                     $result = $conn->query($query);
                     if(!$result) die($conn->error);
                     $lenght = $result->num_rows;
-
                     for($i = 0;  $i < $lenght; $i++) {
                         $result->data_seek($i);
                         $row = $result->fetch_assoc();
@@ -184,13 +180,18 @@ else
                     $query = "SELECT * FROM signup";
                     $result = $conn->query($query);
                     if(!$result) die($conn->error);
-
-                    for($i = 0, $lenght = $result->num_rows; $i < $lenght; $i++){
+                    $lenght = $result->num_rows;
+                    for($i = 0; $i < $lenght; $i++){
                         $result->data_seek($i);
                         $row = $result->fetch_assoc();
                         ?>
                         <div><center>
-                                <a href="del.php">Удалить пользователя</a>
+
+                                <form action="del.php" method=post><input
+                                            name='user_id' value="<?php echo $row['user_id']; ?>">
+                                    <input value="Удалить пользователя" type="submit" name="submit"></form>
+
+                                <!-- <a href="del.php?user_id=<//?php echo $row['user_id']; ?>">Удалить пользователя</a>-->
 
                             </center> </div>
                         <?php

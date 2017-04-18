@@ -4,8 +4,7 @@ require_once 'login.php';
 $dbc = new mysqli($hn, $un, $pw, $db);
 
 $path = 'img/'; // директория для загрузки
-//$ext = array_pop(explode('.',$_FILES['myfile']['foto_name'])); // расширение
-$ext = pathinfo($_FILES['myfile']['foto_name'], PATHINFO_EXTENSION);
+$ext = pathinfo($_FILES['myfile']['name'], PATHINFO_EXTENSION); // расширение
 $new_name = time().'.'.$ext; // новое имя с расширением
 $full_path = $path.$new_name; // полный путь с новым именем и расширением
 
@@ -19,7 +18,6 @@ if($_FILES['myfile']['error'] == 0){
             mysqli_query($dbc, $query);
             mysqli_close($dbc);
             exit();
-
 
         // Можно сохранить $full_path (полный путь) или просто имя файла - $new_name
     }

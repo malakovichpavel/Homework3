@@ -13,10 +13,7 @@ if(isset($_POST["submit"])){
     $name = mysqli_real_escape_string($dbc, trim($_POST['name']) );
     $age = mysqli_real_escape_string($dbc, trim($_POST['age']) );
     $description = mysqli_real_escape_string($dbc, trim($_POST['description']) );
-
-    $userid = (int)$_POST['description']; // то есть ты должен его уже знать ещё на этапе
-    // заполнения формы пользователем.
-    // Он должен быть спрятан в форме так же как при удалении пользователя в <input type=hidden>
+    $userid = setcookie('user_id');
 
             $query = "INSERT INTO info (name, age, description, user_id) VALUES ('$name', '$age', '$description', '$userid')";
             mysqli_query($dbc, $query);
@@ -26,6 +23,7 @@ if(isset($_POST["submit"])){
             mysqli_close($dbc);
             exit();
 }
+//"SELECT FROM info WHERE user_id='user_id'"
 ?>
 <!DOCTYPE html>
 <html>
