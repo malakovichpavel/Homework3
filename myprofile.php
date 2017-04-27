@@ -15,7 +15,7 @@ if(isset($_POST["submit"])){
     $description = mysqli_real_escape_string($dbc, trim($_POST['description']) );
     $userid = setcookie('user_id');
 
-            $query = "INSERT INTO info (name, age, description, user_id) VALUES ('$name', '$age', '$description', '$userid')";
+            $query = "INSERT INTO info (name, age, description, user_id) VALUES ('$name', '$age', '$description', '$user_id')";
             mysqli_query($dbc, $query);
             echo 'Всё готово, данные о себе введены, а теперь загрузите фото для аватара';?>
             <p><a href="foto.php">Загрузить фото для аватара</a> </p>

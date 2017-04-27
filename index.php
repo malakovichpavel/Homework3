@@ -7,12 +7,13 @@ if (!isset($_COOKIE['user_id'])) {
         $user_password = mysqli_real_escape_string($dbc, trim($_POST['password']) );
         if(!empty($user_username) && !empty($user_password)) {
             $query = "SELECT user_id, username FROM signup WHERE 
-username = '$user_username' AND password = SHA('$user_password')";
+username = '$user_username' AND password = sha1('$user_password')";
             $data = mysqli_query($dbc, $query);
             if(mysqli_num_rows($data) ==1){
                 $row = mysqli_fetch_assoc($data);
-                setcookie('user_id', $row['user_id'], time() + (60*60*24*30));
-                setcookie('username', $row['username'], time() + (60*60*24*30));
+                setcookie('user_id', $row['user_id'], time() + (60*60*24*30));// если логин и пароль введены верно,
+                // то сохраняем данные в куки
+                setcookie('password', sha1($user_password), time() + (60*60*24*30), '/');
                 $home_url = 'http://' . $_SERVER['HTTP_HOST'];
                 header('Location:' . $home_url);
             }
@@ -26,6 +27,13 @@ username = '$user_username' AND password = SHA('$user_password')";
         }
     }
 }
+
+require_once 'check.php'; // подключаем файл проверки, обязательно после подключения к базе
+
+if ($loggined) { // если проверка пройдена, то перенаправляем на страницу профиля
+    header('Location: myprofile.php');
+}
+
 
 ?>
 <!DOCTYPE html>

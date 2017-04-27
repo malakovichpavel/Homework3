@@ -2,6 +2,12 @@
 <?php
 require_once 'login.php';
 $dbc = new mysqli($hn, $un, $pw, $db);
+require_once 'check.php'; // подключаем файл проверки, обязательно после подключения к базе
+
+if (!$loggined) { // если проверка не пройдена, то перенаправляем на страницу логина
+    header('Location: index.php');
+}
+
 
 $path = 'img/'; // директория для загрузки
 $ext = pathinfo($_FILES['myfile']['name'], PATHINFO_EXTENSION); // расширение
@@ -11,15 +17,21 @@ $full_path = $path.$new_name; // полный путь с новым имене�
 if($_FILES['myfile']['error'] == 0){
     if(move_uploaded_file($_FILES['myfile']['tmp_name'], $full_path)){
         // Если файл успешно загружен, то вносим в БД
-
-           /* $new_name = mysqli_real_escape_string($dbc, trim($_POST['new_name']) );*/ // экранизация для безопасности
-
-            $query = "INSERT INTO info (foto_name) VALUES ('$new_name')";
+        $query = "SELECT * FROM info WHERE user_id = '$user_id'"; // переменная $user_id берётся из куков в файле check.php
+        $data = mysqli_query($dbc, $query);
+        if(mysqli_num_rows($data) != 0) { // если для данного пользователя уже есть запись в таблице инфо, то обновляем её
+            $row = mysqli_fetch_assoc($data);
+            $query = "UPDATE `info` SET `foto_name` = '$new_name' WHERE `info_id` = ".$row['info_id'];
             mysqli_query($dbc, $query);
             mysqli_close($dbc);
-            exit();
-
-        // Можно сохранить $full_path (полный путь) или просто имя файла - $new_name
+        } else { // если же нет, то создаём новую
+            $query = "INSERT INTO info (`user_id`, `foto_name`) VALUES ('$user_id', '$new_name')"; // нужно обязательно
+            // указывать для какого пользователя эта картинка!!!
+            mysqli_query($dbc, $query);
+            mysqli_close($dbc);
+            echo ' всё успешно загружено';
+            //exit(); - эксит тут лишний, лучше вывести сообщение, что всё успешно загружено
+        }
     }
 }
 

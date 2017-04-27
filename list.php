@@ -16,10 +16,10 @@ if ($loggedin)
     echo "<br ><ul>" .
         "<span class='info'>&#8658; Вы зарегистрированы - можете пользоваться ресурсом.</span><br><br>";
 }
-else
+/*else
 {
     header('Location: index.php');
-}
+}*/
 
 ?>
 <!DOCTYPE html>
