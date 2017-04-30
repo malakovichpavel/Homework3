@@ -13,7 +13,9 @@ if(isset($_POST["submit"])){
     $name = mysqli_real_escape_string($dbc, trim($_POST['name']) );
     $age = mysqli_real_escape_string($dbc, trim($_POST['age']) );
     $description = mysqli_real_escape_string($dbc, trim($_POST['description']) );
-    $userid = setcookie('user_id');
+    //$userid = setcookie('user_id');
+    $userid = $_COOKIE['user_id'];
+    //$user     = $_COOKIE['user_id'];
 
             $query = "INSERT INTO info (name, age, description, user_id) VALUES ('$name', '$age', '$description', '$user_id')";
             mysqli_query($dbc, $query);
