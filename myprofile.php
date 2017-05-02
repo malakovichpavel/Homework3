@@ -6,15 +6,12 @@ require_once 'login.php';
 $dbc = new mysqli($hn, $un, $pw, $db);
 if(isset($_POST["submit"])){
 
-   // $user_id = mysqli_real_escape_string($dbc, trim($_POST['$user_id']) );
-
-    //$query = "INSERT INTO info(user_id) SELECT 'user_id' FROM signup";
 
     $name = mysqli_real_escape_string($dbc, trim($_POST['name']) );
     $age = mysqli_real_escape_string($dbc, trim($_POST['age']) );
     $description = mysqli_real_escape_string($dbc, trim($_POST['description']) );
-    //$userid = setcookie('user_id');
-    $userid = $_COOKIE['user_id'];
+    //$user_id = setcookie('user_id');
+    $user_id = $_COOKIE['user_id'];
     //$user     = $_COOKIE['user_id'];
 
             $query = "INSERT INTO info (name, age, description, user_id) VALUES ('$name', '$age', '$description', '$user_id')";
@@ -25,7 +22,7 @@ if(isset($_POST["submit"])){
             mysqli_close($dbc);
             exit();
 }
-//"SELECT FROM info WHERE user_id='user_id'"
+
 ?>
 <!DOCTYPE html>
 <html>

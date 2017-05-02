@@ -30,7 +30,6 @@ if($_FILES['myfile']['error'] == 0){
             mysqli_query($dbc, $query);
             mysqli_close($dbc);
             echo ' всё успешно загружено';
-            //exit(); - эксит тут лишний, лучше вывести сообщение, что всё успешно загружено
         }
     }
 }
